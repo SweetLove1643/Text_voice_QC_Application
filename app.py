@@ -3,8 +3,8 @@ from streamlit_tags import st_tags
 import json
 import requests
 
-webhook_url = "https://n8n.ai.hvnet.vn/webhook-test/6ecf3814-40b0-4340-ba7b-5f61d997b700"
-# webhook_url = "https://n8n.ai.hvnet.vn/webhook/6ecf3814-40b0-4340-ba7b-5f61d997b700"
+# webhook_url = "https://n8n.ai.hvnet.vn/webhook-test/6ecf3814-40b0-4340-ba7b-5f61d997b700"
+webhook_url = "https://n8n.ai.hvnet.vn/webhook/6ecf3814-40b0-4340-ba7b-5f61d997b700"
 
 
 def init_state():
@@ -228,7 +228,6 @@ with right:
                 "raw": raw
             }
         st.session_state["last_result"] = parsed
-
 
     st.subheader("📊 Kết quả QC")
 
