@@ -1,0 +1,57 @@
+{
+  "required_keywords": [
+    "Sản phẩm này không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh."
+  ],
+
+  "forbidden_keywords": [
+    "chữa", "chữa trị", "trị", "điều trị", "đặc trị", "trị liệu",
+    "hết bệnh", "hết hẳn", "khỏi hẳn", "khỏi bệnh",
+    "dứt điểm", "hết sạch", "sạch bệnh", "diệt bệnh",
+    "tận gốc", "sạch gốc", "triệt tiêu", "loại bỏ hoàn toàn",
+    "đánh bay", "thổi bay", "xua tan bệnh",
+    "vĩnh biệt bệnh", "ngăn ngừa", "phòng ngừa",
+    "xóa sổ", "diệt tận gốc", "diệt sạch",
+    "thuốc", "bài thuốc", "thần dược",
+
+    "vĩnh viễn", "vĩnh cửu", "mãi mãi", "cả đời",
+    "không bao giờ cần đến bác sĩ", "không cần bác sĩ",
+    "hiệu quả tức thì", "hiệu quả ngay lập tức", "tác dụng ngay",
+    "100% hiệu quả", "hiệu quả tuyệt đối", "không kích ứng 100%",
+    "tự nhiên 100%", "nguyên chất 100%", "hữu cơ 100%",
+    "thần kỳ", "kỳ diệu", "siêu nhanh", "siêu hiệu quả",
+
+    "99%", "100%", "tỷ lệ thành công",
+    "số 1", "top 1", "hàng đầu Việt Nam", "uy tín nhất",
+    "được tin dùng bởi hàng triệu người",
+    "được khuyên dùng bởi bác sĩ",
+
+    "không gây kích ứng tuyệt đối",
+    "không thể thất bại",
+    "đảm bảo an toàn tuyệt đối",
+    "đảm bảo khỏi bệnh",
+
+    "trị mụn tận gốc",
+    "trị nám",
+    "điều trị da liễu",
+    "đặc trị mụn",
+    "điều trị sẹo",
+
+    "thuốc lá", "vape", "thuốc lá điện tử",
+    "rượu", "bia", "thức uống có cồn",
+    "tình dục", "kích dục", "bao cao su",
+
+    "tôn giáo", "thiên chúa", "phật giáo", "hồi giáo",
+    "đảng", "chính phủ", "quốc hội", "nhà nước",
+    "bộ trưởng", "lãnh đạo", "cán bộ", "sĩ quan", "quân đội",
+    "cựu chiến binh", "cơ quan nhà nước",
+
+    "hành động nguy hiểm", "mạo hiểm",
+    "ghê rợn", "kinh dị", "máu me", "bạo lực",
+    "gây sốc", "rùng rợn", "đáng sợ",
+
+    "mô tả hành vi nguy hiểm",
+    "mô tả gây sốc",
+    "tái hiện chấn thương",
+    "hình ảnh tiêu cực quá mức"
+  ]
+}
