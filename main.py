@@ -135,16 +135,16 @@ Hiện đang có ưu đãi tặng kem chống nắng và mặt nạ nè! Còn 50
 left, right = st.columns([1, 1])
 
 with left:  
-    st.subheader("📚 Rule Base")
+    st.subheader("📚 Cấu hình kiểm tra")
 
-    with st.expander("📥 Import Rule Base từ JSON"):
+    with st.expander("📥 Nhập từ danh sách từ cấm/bắt buộc bằng file JSON"):
         file_up = st.file_uploader("Chọn file JSON", type=["json"])
         if file_up and st.button("Import & Merge JSON", on_click=reload_tags):
             import_json_rulebase(file_up)
 
     with st.expander("📄 Hiện tại Rule Base"):
-        st.markdown("### 🚫 Forbidden Keywords")
-        if st.button("Clear all forbidden", on_click=reload_tags):
+        st.markdown("### 🚫 Danh sách từ cấm")
+        if st.button("Xóa danh sách từ cấm", on_click=reload_tags):
             st.session_state["forbidden_keywords"] = []
         forbidden_ui = st_tags(
             label="Thêm từ cấm",
@@ -152,8 +152,8 @@ with left:
             value=st.session_state["forbidden_keywords"],
             key=f"forbidden_tags_{st.session_state.reload_keyword_forbidden}"
         )
-        st.markdown("### ✅ Required Keywords")
-        if st.button("Clear all required", on_click=reload_tags):
+        st.markdown("### ✅ Danh sách từ bắt buộc")
+        if st.button("Xóa danh sách từ bắt buốc", on_click=reload_tags):
             st.session_state["required_keywords"] = []
 
         required_ui = st_tags(
@@ -163,7 +163,7 @@ with left:
             key=f"required_tags_{st.session_state.reload_keyword_required}"
         )
 
-    with st.expander("👀 JSON Rule Base hiện tại"):
+    with st.expander("👀 JSON danh sách từ cấm hiện tại"):
         current_json = {
             "required_keywords": st.session_state["required_keywords"],
             "forbidden_keywords": st.session_state["forbidden_keywords"],
@@ -189,8 +189,8 @@ with left:
 
     with st.expander("⚙️ Tuỳ chọn QC nâng cao"):
         st.subheader("⚙️ Tuỳ chọn QC")
-        qc_req = st.checkbox("QC Required Keywords", value=True)
-        qc_forb = st.checkbox("QC Forbidden Keywords", value=True)
+        qc_req = st.checkbox("Kiểm tra các từ bắt buộc", value=True)
+        qc_forb = st.checkbox("Kiểm tra các từ cấm", value=True)
         
         active = st.radio(
             "QC theo mẫu nội dung:",
@@ -206,27 +206,27 @@ with left:
             with cA:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Attention</h4>', unsafe_allow_html=True)
-                    qc_aida_hook = st.checkbox("Check Hook", value=True, key="qc_aida_hook")
+                    qc_aida_hook = st.checkbox("Kiểm tra Hook", value=True, key="qc_aida_hook")
 
             with cI:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Interest</h4>', unsafe_allow_html=True)
-                    qc_aida_solution  = st.checkbox("Check Solution", value=True, key="qc_aida_solution")
-                    qc_aida_usp  = st.checkbox("Check USP", value=True, key="qc_aida_usp")
-                    qc_aida_time = st.checkbox("Check Time", value=True, key="qc_aida_time")
+                    qc_aida_solution  = st.checkbox("Kiểm tra Solution", value=True, key="qc_aida_solution")
+                    qc_aida_usp  = st.checkbox("Kiểm tra USP", value=True, key="qc_aida_usp")
+                    qc_aida_time = st.checkbox("Kiểm tra Time", value=True, key="qc_aida_time")
 
             with cD:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Desire</h4>', unsafe_allow_html=True)
-                    qc_aida_mechanism = st.checkbox("Check Mechanism", value=True, key="qc_aida_mechanism")
-                    qc_aida_testimonial = st.checkbox("Check Testimonial", value=True, key="qc_aida_testimonial")
-                    qc_aida_usage       = st.checkbox("Check Usage", value=True, key="qc_aida_usage")
+                    qc_aida_mechanism = st.checkbox("Kiểm tra Mechanism", value=True, key="qc_aida_mechanism")
+                    qc_aida_testimonial = st.checkbox("Kiểm tra Testimonial", value=True, key="qc_aida_testimonial")
+                    qc_aida_usage       = st.checkbox("Kiểm tra Usage", value=True, key="qc_aida_usage")
 
             with cA2:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Action</h4>', unsafe_allow_html=True)
-                    qc_aida_cta  = st.checkbox("Check CTA", value=True, key="qc_aida_cta")
-                    qc_aida_promo = st.checkbox("Check Promotion", value=True, key="qc_aida_promo")
+                    qc_aida_cta  = st.checkbox("Kiểm tra CTA", value=True, key="qc_aida_cta")
+                    qc_aida_promo = st.checkbox("Kiểm tra Promotion", value=True, key="qc_aida_promo")
 
         elif active == "PAS":
             st.subheader("📄 Checklist PAS")
@@ -236,72 +236,81 @@ with left:
             with cP:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Problem</h4>', unsafe_allow_html=True)
-                    qc_pas_hook = st.checkbox("Check Hook", value=True, key="qc_pas_hook")
-                    qc_pas_problem_statement = st.checkbox("Check Problem Statement", value=True, key="qc_pas_problem_statement")
+                    qc_pas_hook = st.checkbox("Kiểm tra Hook", value=True, key="qc_pas_hook")
+                    qc_pas_problem_statement = st.checkbox("Kiểm tra Problem Statement", value=True, key="qc_pas_problem_statement")
 
             with cA:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Agitate</h4>', unsafe_allow_html=True)
-                    qc_pas_agitate = st.checkbox("Check Agitate", value=True, key="qc_pas_agitate")
-                    qc_pas_antisolution = st.checkbox("Check Anti-solution", value=True, key="qc_pas_antisolution")
+                    qc_pas_agitate = st.checkbox("Kiểm tra Agitate", value=True, key="qc_pas_agitate")
+                    qc_pas_antisolution = st.checkbox("Kiểm tra Anti-solution", value=True, key="qc_pas_antisolution")
 
             with cS:
                 with st.container(border=True):
                     st.markdown('<h4 style="margin:0; color:#ff4b4b; font-weight:600;">Solution</h4>', unsafe_allow_html=True)
-                    qc_pas_solution = st.checkbox("Check Solution", value=True, key="qc_pas_solution")
-                    qc_pas_usp = st.checkbox("Check USP", value=True, key="qc_pas_usp")
-                    qc_pas_time = st.checkbox("Check Time", value=True, key="qc_pas_time")
-                    qc_pas_mechanism   = st.checkbox("Check Mechanism", value=True, key="qc_pas_mechanism")
-                    qc_pas_usage   = st.checkbox("Check Usage", value=True, key="qc_pas_usage")
-                    qc_pas_proof_testimonial = st.checkbox("Check Proof/Testimonial", value=True, key="qc_pas_proof_testimonial")
-                    qc_pas_cta     = st.checkbox("Check CTA", value=True, key="qc_pas_cta")
-                    qc_pas_promotion     = st.checkbox("Check Promotion", value=True, key="qc_pas_promotion")
+                    qc_pas_solution = st.checkbox("Kiểm tra Solution", value=True, key="qc_pas_solution")
+                    qc_pas_usp = st.checkbox("Kiểm tra USP", value=True, key="qc_pas_usp")
+                    qc_pas_time = st.checkbox("Kiểm tra Time", value=True, key="qc_pas_time")
+                    qc_pas_mechanism   = st.checkbox("Kiểm tra Mechanism", value=True, key="qc_pas_mechanism")
+                    qc_pas_usage   = st.checkbox("Kiểm tra Usage", value=True, key="qc_pas_usage")
+                    qc_pas_proof_testimonial = st.checkbox("Kiểm tra Proof/Testimonial", value=True, key="qc_pas_proof_testimonial")
+                    qc_pas_cta     = st.checkbox("Kiểm tra CTA", value=True, key="qc_pas_cta")
+                    qc_pas_promotion     = st.checkbox("Kiểm tra Promotion", value=True, key="qc_pas_promotion")
 
     with st.expander("📄 Định nghĩa các mẫu nội dung (Content Templates)"):
         if active == "AIDA":
             st.subheader("📄 Mẫu nội dung AIDA")
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Attention</h5>', unsafe_allow_html=True)
-            define_hook_aida = st.text_input("Định nghĩa Hook", value = "Là những câu mở đầu để gây chú ý, nhấn mạnh sản phẩm, tạo curiosity…")
+            define_hook_aida = st.text_input("Định nghĩa Hook", 
+                                             value = "Là câu nói chặn lướt, thu hút người xem, thường đặt vấn đề hoặc “gọi tên tình trạng” để kéo người xem vào AIDA")
 
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Interest</h5>', unsafe_allow_html=True)
-            define_solution_aida = st.text_input("Định nghĩa Solution", value = "Là cách sản phẩm giải quyết vấn đề của khách hàng")
-            define_usp_aida = st.text_input("Định nghĩa USP", value = "Là những điểm khác biệt, ưu việt của sản phẩm so với đối thủ")
-            define_time_aida = st.text_input("Địn nghĩa Time", value = "Thời gian dự kiến mà người dùng có thể cảm nhận được sự tác động/lợi ích của sản phẩm đến vấn đề mà người dùng đang gặp phải")
+            define_solution_aida = st.text_input("Định nghĩa Solution", 
+                                                 value = "Là câu giới thiệu sản phẩm, đưa ra cách giải quyết vấn đề của khách hàng nhờ vào sản phẩm")
+            define_usp_aida = st.text_input("Định nghĩa Unique Selling Point", 
+                                            value = "Là câu nêu điểm đặc biệt của sản phẩm đang giới thiệu so với các sản phẩm khác ngoài thị trường, khiến cho khách hàng chọn sản phẩm của mình vì điểm khác biệt đó")
+            define_time_aida = st.text_input("Định nghĩa Time Effect", 
+                                             value = "Là câu đề cập thời gian cụ thể giờ, ngày, tháng,... mà người dùng có thể bắt đầu cảm thấy sự tác động/cải thiện vấn đề của mình do sản phẩm ảnh hưởng tới")
             
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Desire</h5>', unsafe_allow_html=True)
-            define_mechanism_aida = st.text_input("Định nghĩa Mechanism", value = "Giải thích ngắn gọn cơ chế, vì sao giải pháp/sản phẩm này có thể giải quyết vấn đề (logic dễ hiểu, không cần học thuật) hoặc giải thích cách tác động của thành phần sản phẩm tới vấn đề mà người dùng đang gặp phải.")
-            define_usage_aida = st.text_input("Định nghĩa Usage", value="Hướng dẫn cách dùng/cách triển khai để đạt hiệu quả và giảm lăn tăn “mua về dùng sao?”.")
-            define_testimonial_aida = st.text_input("Định nghĩa Testimonial", value="Bằng chứng xã hội từ người dùng thật (feedback/quote/case) giúp tăng niềm tin, thường có 3 ý: trước khi dùng – trải nghiệm – kết quả/cảm nhận. ")
+            define_mechanism_aida = st.text_input("Định nghĩa Mechanism", 
+                                                  value = "Là câu giải thích ngắn gọn cơ chế, vì sao giải pháp/sản phẩm này có thể giải quyết vấn đề hoặc giải thích cách tác động của thành phần sản phẩm tới vấn đề mà người dùng đang gặp phải.")
+            define_usage_aida = st.text_input("Định nghĩa Usage", 
+                                              value="Là câu hướng dẫn cơ bản dành cho người dùng cách sử dụng sản phẩm như thế nào")
+            define_testimonial_aida = st.text_input("Định nghĩa Testimonial", 
+                                                    value="Là câu bằng chứng xã hội từ người dùng thật (feedback/quote/case) giúp tăng niềm tin, thường có 3 ý: trước khi dùng – trải nghiệm – kết quả/cảm nhận. ")
             
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Action</h5>', unsafe_allow_html=True)
-            define_cta_aida = st.text_input("Định nghĩa Call to action", value="Lời kêu gọi hành động rõ việc cần làm ngay (nhắn tin, bấm link, điền form…).")
-            define_promotion_aida = st.text_input("Định nghĩa Promotion", value="Lý do để hành động sớm (ưu đãi/quà tặng/freeship/combo/thời hạn).")
+            define_cta_aida = st.text_input("Định nghĩa Call to action", 
+                                            value="Là lời kêu gọi hành động rõ việc cần làm ngay (nhắn tin, bấm link, điền form…).")
+            define_promotion_aida = st.text_input("Định nghĩa Promotion", 
+                                                  value="Là câu lý do để hành động sớm (ưu đãi/quà tặng/freeship/combo/thời hạn).")
         if active == "PAS":
             st.subheader("📄 Mẫu nội dung PAS")
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Problem</h5>', unsafe_allow_html=True)
-            define_hook_pas = st.text_input("Định nghĩa Hook", value = "Là câu nói chặn lướt, thường đặt vấn đề hoặc “gọi tên tình trạng” để kéo người xem vào PAS")
-            define_problem_statement_pas = st.text_input("Định nghĩa Problem Statement", value = "Nêu vấn đề cụ thể, mô tả triệu chứng/tình huống thật rõ, đúng tệp, càng cụ thể càng tốt để người xem tự gật đầu “đúng tôi rồi”.")
+            define_hook_pas = st.text_input("Định nghĩa Hook", value = "Là câu nói chặn lướt, thu hút người xem, thường đặt vấn đề hoặc “gọi tên tình trạng” để kéo người xem vào PAS")
+            define_problem_statement_pas = st.text_input("Định nghĩa Problem Statement", value = "Là câu nêu vấn đề cụ thể, mô tả triệu chứng/tình huống thật rõ, đúng tệp, càng cụ thể càng tốt để người xem tự gật đầu “đúng tôi rồi”.")
             
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Agitate</h5>', unsafe_allow_html=True)
-            define_agitate_pas = st.text_input("Định nghĩa Agitate", value = "Phải đề cập đến nỗi đau nếu không sử dụng sản phẩm. Đẩy “độ đau” lên bằng cách nói về hậu quả, chi phí, sự phiền, nỗi lo nếu kéo dài; mục tiêu là tăng động lực thay đổi.")
-            define_antisolution_pas = st.text_input("Định nghĩa Anti-solution", value = "Chỉ ra những cách người dùng hay làm nhưng sai hướng/không hiệu quả, để tạo “aha moment” và chuẩn bị cho giải pháp của bạn.")
-            
+            define_agitate_pas = st.text_input("Định nghĩa Agitate", value = "Là câu nói đề cập đến những nỗi đau, bất tiện, khó chịu mà người dùng phải chịu nếu không sử dụng sản phẩm/dịch vụ.")
+            define_antisolution_pas = st.text_input("Định nghĩa Anti-solution", value = "Là câu nói về việc khách hàng đang sử dụng giải pháp A nhưng không hiệu quả, từ đó tạo tiền đề giới thiệu giải pháp B (sản phẩm của đang giới thiệu).")
+
             st.markdown('<h5 style="margin:0; color:#ff4b4b; font-weight:300;">Solution</h5>', unsafe_allow_html=True)
-            define_solution_pas = st.text_input("Định nghĩa Solution", value="Là các câu giới thiệu sản phẩm, có thể giải quyết vấn đề gì mà người dùng đang gặp phải,...")
-            define_usp_pas = st.text_input("Định nghĩa Unique Selling Point", value="Điểm đặc biệt của sản phẩm đang giới thiệu so với các sản phẩm khác ngoài thị trường, khiến cho khách hàng chọn sản phẩm của mình vì điểm khác biệt đó")
-            define_time_pas = st.text_input("Định nghĩa Time Effect", value="Thời gian mà người dùng có thể bắt đầu cảm thấy sự tác động/cải thiện vấn đề của mình do sản phẩm ảnh hưởng tới")
+            define_solution_pas = st.text_input("Định nghĩa Solution", value="Là câu giới thiệu sản phẩm, đưa ra cách giải quyết vấn đề của khách hàng nhờ vào sản phẩm")
+            define_usp_pas = st.text_input("Định nghĩa Unique Selling Point", value="Là câu nêu điểm đặc biệt của sản phẩm đang giới thiệu so với các sản phẩm khác ngoài thị trường, khiến cho khách hàng chọn sản phẩm của mình vì điểm khác biệt đó")
+            define_time_pas = st.text_input("Định nghĩa Time Effect", value="Là câu đề cập thời gian cụ thể giờ, ngày, tháng,... mà người dùng có thể bắt đầu cảm thấy sự tác động/cải thiện vấn đề của mình do sản phẩm ảnh hưởng tới")
 
-            define_mechanism_pas = st.text_input("Định nghĩa Mechanism", value="Giải thích cách sản phẩm hoặc các thành phần của sản phẩm có thể giải quyết vấn về của khác hàng theo logic đơn giản")
-            define_usage_pas = st.text_input("Định nghĩa Usage", value="Hướng dẫn người dùng cách sử dụng sản phẩm như thế nào")
+            define_mechanism_pas = st.text_input("Định nghĩa Mechanism", value="Là câu giải thích cách sản phẩm hoặc các thành phần của sản phẩm có thể giải quyết vấn về của khác hàng theo logic đơn giản")
+            define_usage_pas = st.text_input("Định nghĩa Usage", value="Là câu hướng dẫn cơ bản dành cho người dùng cách sử dụng sản phẩm như thế nào")
 
-            define_proof_testimonial_pas = st.text_input("Định nghĩa Proof/Testimonial", value = "Bằng chứng xã hội từ người dùng thật (feedback/quote/case) giúp tăng niềm tin, thường có 3 ý: trước khi dùng – trải nghiệm – kết quả/cảm nhận. ")
-            
-            define_cta_pas = st.text_input("Đĩnh nghĩa Call to action", value="Lời kêu gọi hành động rõ việc cần làm ngay (nhắn tin, bấm link, điền form…)")
-            define_promotion_pas = st.text_input("Đĩnh nghĩa Promotion", value="Lý do để hành động sớm (ưu đãi/quà tặng/freeship/combo/thời hạn).")
+            define_proof_testimonial_pas = st.text_input("Định nghĩa Proof/Testimonial", value = "Là câu bằng chứng xã hội từ người dùng thật (feedback/quote/case) giúp tăng niềm tin, thường có 3 ý: trước khi dùng – trải nghiệm – kết quả/cảm nhận.")
+
+            define_cta_pas = st.text_input("Định nghĩa Call to action", value="Là lời kêu gọi hành động rõ việc cần làm ngay (nhắn tin, bấm link, điền form…)")
+            define_promotion_pas = st.text_input("Định nghĩa Promotion", value="Là câu lý do để hành động sớm (ưu đãi/quà tặng/freeship/combo/thời hạn).")
 
 with right:
-    st.subheader("🎯 Cấu hình điểm trừ (Score Settings)")
-    with st.expander("⚙️ Setup Score Parameters"):
+    st.subheader("🎯 Cấu hình điểm trừ")
+    with st.expander("⚙️ Cài đặt các điểm trừ cho từng mục QC"):
         score_missing_required = st.number_input(
             "Điểm trừ khi thiếu Required Keywords", 
             value=-12, step=1
@@ -312,7 +321,7 @@ with right:
         )
         
         if active == "AIDA":
-            st.markdown("#### AIDA Score Settings")
+            st.markdown("#### Cấu hình điểm trừ cho AIDA")
             aida_score_hook = st.number_input("Điểm trừ thiếu Hook", value=-2, step=1)
 
             aida_score_solution = st.number_input("Điểm trừ thiếu Solution", value=-2, step=1)
@@ -327,7 +336,7 @@ with right:
             aida_score_promo = st.number_input("Điểm trừ thiếu Promotion", value=-3, step=1)
 
         elif active == "PAS":
-            st.markdown("#### PAS Score Settings")
+            st.markdown("#### Cấu hình điểm trừ cho PAS")
             pas_hook = st.number_input("Điểm trừ thiếu Hook", value=-2, step=1)
             pas_problem_statement = st.number_input("Điểm trừ thiếu Problem Statement", value=-3, step=1)
             
@@ -365,7 +374,7 @@ with right:
         </style>
         """, unsafe_allow_html=True)
 
-    if st.button("▶️ Run QC", use_container_width=True, type="primary", key="run_qc"):
+    if st.button("▶️ Bắt đầu kiểm tra", use_container_width=True, type="primary", key="run_qc"):
         if not script.strip():
             st.warning("⚠️ Vui lòng nhập script.")
             st.stop()
@@ -429,7 +438,7 @@ with right:
                             }
                 
                 prompt = f"""
-                        Bạn là Video Ads Script QC Lead theo framework AIDA.
+                        Bạn là một chuyên viên chuyên kiểm tra nội dung lời thoại video theo chuẩn AIDA.
                         Nhiệm vụ của bạn là kiểm định cho đoạn script dưới đây dựa trên các tiêu chí mà người dùng gửi vào.
                             1. Đây là nội dung bạn cần kiểm tra
                             {payload}
@@ -438,9 +447,9 @@ with right:
                             - required_keywords: kiểm tra xem các keywords có tồn tài trong script hay không và trả về những từ bị thiếu.
                             - forbidden_keywords: Trả về các keywords bị cấm xuất hiện trong script.
                             2.2 Content Criteria
-                            Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn nguyên văn đoạn nếu có) 
+                            Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn lại các văn đoạn (nếu có)) 
                             Nếu excerpt có nhiều hơn một thì hãy liên kết bằng cách kí tự liên kết(ví dụ như ||) để làm sao nhận ra đó là nhiều câu nhưng TUYỆT ĐỐI trường "excerpt" không được chứa nhiều chuỗi và chỉ chứa một chuỗi duy nhất
-                            Nhiệm vụ của bạn là sẽ kiểm tra script dựa vào các định nghĩa được mô tả như sau:
+                            Nhiệm vụ của bạn là sẽ kiểm tra script dựa vào các định nghĩa định tính được mô tả như sau:
                             2.2.1 Attention
                             Hook: {define_hook_aida}
                             *Ví dụ: Bạn cũng từng thử đủ cách mà vấn đề này vẫn quay lại y như cũ?
@@ -461,13 +470,13 @@ with right:
                             *Ví dụ: Nhắn ‘TƯ VẤN’ để nhận hướng dẫn phù hợp, đang có ưu đãi [X%/quà] đến hết [ngày/khung giờ].
                             2.3 Cấu trúc
                             Bạn sẽ kiểm tra cấu trúc tổng thể của script có đúng theo mấu AIDA hay không(lần lượt trong script là Attention, Interest, Desire, Action) và trả kết quả is_valid_structure và nêu vấn đề của script bằng tiếng Việt ở issues.
-                            3. OUTPUT FORMAT (BẮT BUỘC)
+                            3. Định dạng phải trả về (BẮT BUỘC)
                             Luôn trả về JSON hợp lệ theo đúng mẫu sau:
                             {output_format}                           
                             Trả về excerpt = "" thay vì excerpt = null hoặc N/A.
                             Không được trả về thêm bất kỳ nội dung nào ngoài JSON.
                             {prompt_info}
-                            YÊU CẦU KIỂM TRA KHẮT KHE, CHÍNH XÁC VỀ SỰ TỒN TẠI CỦA CÁC THUỘC TÍNH TRONG CONTENT CRITERIA
+                            YÊU CẦU KIỂM TRA KHẮT KHE, CHÍNH XÁC VỀ SỰ TỒN TẠI CỦA CÁC THUỘC TÍNH TRONG CONTENT CRITERIA DỰA VÀO CÁC ĐỊNH NGHĨA Ở TRÊN.
                         """
                 
                 data_requests = {
@@ -576,7 +585,7 @@ with right:
                             }
                 
                 prompt = f"""
-                        Bạn là Video Ads Script QC Lead theo framework PAS.
+                        Bạn là một chuyên viên chuyên kiểm tra nội dung lời thoại video theo chuẩn PAS.
                         Nhiệm vụ của bạn là kiểm định cho đoạn script dưới đây dựa trên các tiêu chí mà người dùng gửi vào.
                             1. Đây là nội dung bạn cần kiểm tra
                             {payload}
@@ -585,9 +594,9 @@ with right:
                             - required_keywords: kiểm tra xem các keywords có tồn tài trong script hay không và trả về những từ bị thiếu.
                             - forbidden_keywords: Trả về các keywords bị cấm xuất hiện trong script.
                             2.2 Content Criteria
-                            Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn nguyên văn đoạn nếu có) 
+                            Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn lại các văn đoạn (nếu có))
                             Nếu excerpt có nhiều hơn một thì hãy liên kết bằng cách kí tự liên kết(ví dụ như ||) để làm sao nhận ra đó là nhiều câu nhưng TUYỆT ĐỐI trường "excerpt" không được chứa nhiều chuỗi và chỉ chứa một chuỗi duy nhất
-                            Nhiệm vụ của bạn là sẽ kiểm tra script dựa vào các định nghĩa được mô tả như sau:
+                            Nhiệm vụ của bạn là sẽ kiểm tra script dựa vào các định nghĩa định tính được mô tả như sau:
                             2.2.1 Problem
                             Hook: {define_hook_pas}
                             *Ví dụ: Nếu bạn đang [vấn đề] mà càng làm càng không cải thiện, bạn không hề cô đơn
@@ -613,13 +622,13 @@ with right:
                             *Ví dụ: Nhắn ‘NHẬN TƯ VẤN’ để mình hướng dẫn đúng trường hợp của bạn—ưu đãi [X%/quà] đến hết [mốc thời gian].
                             2.3 Cấu trúc
                             Bạn sẽ kiểm tra cấu trúc tổng thể của script có đúng theo mấu PAS hay không(lần lượt trong script là Problem, Agitate, Solution) và trả kết quả is_valid_structure và nêu vấn đề của script bằng tiếng Việt ở issues.
-                            3. OUTPUT FORMAT (BẮT BUỘC)
+                            3. Định dạng phải trả về (BẮT BUỘC)
                             Luôn trả về JSON hợp lệ theo đúng mẫu sau:
                             {output_format}                           
                             Trả về excerpt = "" thay vì excerpt = null hoặc N/A.
                             Không được trả về thêm bất kỳ nội dung nào ngoài JSON.
-                            YÊU CẦU KIỂM TRA KHẮT KHE, CHÍNH XÁC VỀ SỰ TỒN TẠI CỦA CÁC THUỘC TÍNH TRONG CONTENT CRITERIA
                             {prompt_info}
+                            YÊU CẦU KIỂM TRA KHẮT KHE, CHÍNH XÁC VỀ SỰ TỒN TẠI CỦA CÁC THUỘC TÍNH TRONG CONTENT CRITERIA DỰA VÀO CÁC ĐỊNH NGHĨA Ở TRÊN.
                         """
 
                 data_requests = {
@@ -683,7 +692,7 @@ with right:
             }
         st.session_state["last_result"] = parsed
 
-    st.subheader("📊 Kết quả QC")
+    st.subheader("📊 Kết quả kiểm tra")
 
     result = st.session_state.get("last_result")
 
@@ -700,10 +709,9 @@ with right:
 
         colA, colB, colC = st.columns(3)
         with colA:
-            # st.metric("Kết quả", "PASS" if is_passed else "FAIL")
             label = "Kết quả"
             text = "PASS" if is_passed else "FAIL"
-            color = "#16A34A" if is_passed else "#DC2626"  # xanh / đỏ
+            color = "#16A34A" if is_passed else "#DC2626" 
 
             st.markdown(
                 f"""
@@ -729,17 +737,17 @@ with right:
         with st.expander("ℹ️ Chi tiết Policy Check", expanded=False):
             c1, c2 = st.columns(2)
             with c1:
-                st.metric("Missing Required Keywords", len(missing[0]) if missing else 0)
+                st.metric("Số lượng các từ bắt buộc bị thiếu", len(missing[0]) if missing else 0)
             with c2:
-                st.metric("Forbidden Keywords Found", len(forbidden[0]) if forbidden else 0)
+                st.metric("Số lượng các từ cấm được tìm thấy", len(forbidden[0]) if forbidden else 0)
 
-            with st.expander("❗ Missing Required Keywords"):
+            with st.expander("❗ Danh sách các từ bắt buộc bị thiếu"):
                 if missing and missing[0]:
                     st.error(f"• {missing}")
                 else:
                     st.success("Không thiếu từ bắt buộc.")
 
-            with st.expander("⛔ Forbidden Keywords Found"):
+            with st.expander("⛔ Danh sách các từ cấm được tìm thấy"):
                 if forbidden and forbidden[0]:
                     st.warning(f"• {forbidden}")
                 else:
@@ -796,21 +804,21 @@ with right:
             with col8:
                 show_block("Promotion", act.get("check_promotion", {}))
         
-        st.markdown("## 🧱 Structure Check")
+        st.markdown("## 🧱 Kiểm tra cấu trúc")
 
         structure = result.get("structure", {}) or {}
         is_valid_structure = str(structure.get("is_valid_structure", False)).strip().lower() == "true"
         issues = (structure.get("issues") or "").strip()
 
-        badge = "✅ VALID" if is_valid_structure else "❌ INVALID"
-        st.metric("Structure", badge)
+        badge = "✅ Đã hợp lệ" if is_valid_structure else "❌ Chưa hợp lệ"
+        st.metric("Kết quả kiểm tra cấu trúc", badge)
 
-        with st.expander("🧱 Chi tiết Structure", expanded=not is_valid_structure):
+        with st.expander("🧱 Chi tiết vấn đề về cấu trúc", expanded=not is_valid_structure):
             if is_valid_structure and not issues:
-                st.success("Cấu trúc AIDA hợp lệ. Không có issues.")
+                st.success("Cấu trúc AIDA hợp lệ. Không có vấn đề.")
             else:
-                st.warning("Phát hiện vấn đề về structure:")
-                st.write(issues if issues else "Không có mô tả issues.")
+                st.warning("Phát hiện vấn đề về cấu trúc:")
+                st.write(issues if issues else "Không có mô tả vấn đề.")
     elif result.get("starndard") == "PAS":
         is_passed = result.get("is_passed", False)
         score = result.get("score", 0)
@@ -847,17 +855,17 @@ with right:
         with st.expander("ℹ️ Chi tiết Policy Check", expanded=False):
             c1, c2 = st.columns(2)
             with c1:
-                st.metric("Missing Required Keywords", len(missing[0]) if missing else 0)
+                st.metric("Số lượng các từ bắt buộc bị thiếu   ", len(missing[0]) if missing else 0)
             with c2:
-                st.metric("Forbidden Keywords Found", len(forbidden[0]) if forbidden else 0)
+                st.metric("Số lượng các từ cấm được tìm thấy", len(forbidden[0]) if forbidden else 0)
 
-            with st.expander("❗ Missing Required Keywords"):
+            with st.expander("❗ Danh sách các từ bắt buộc bị thiếu"):
                 if missing and missing[0]:
                     st.error(f"• {missing}")
                 else:
                     st.success("Không thiếu từ bắt buộc.")
 
-            with st.expander("⛔ Forbidden Keywords Found"):
+            with st.expander("⛔ Danh sách các từ cấm được tìm thấy"):
                 if forbidden and forbidden[0]:
                     st.warning(f"• {forbidden}")
                 else:
@@ -911,18 +919,18 @@ with right:
                 show_block("CTA", solution.get("cta", {}))
                 show_block("Promotion", solution.get("promotion", {}))
         
-        st.markdown("## 🧱 Structure Check")
+        st.markdown("## 🧱 Kiểm tra cấu trúc")
 
         structure = result.get("structure", {}) or {}
         is_valid_structure = str(structure.get("is_valid_structure", False)).strip().lower() == "true"
         issues = (structure.get("issues") or "").strip()
 
-        badge = "✅ VALID" if is_valid_structure else "❌ INVALID"
-        st.metric("Structure", badge)
+        badge = "✅ Đã hợp lệ" if is_valid_structure else "❌ Chưa hợp lệ"
+        st.metric("Kết quả kiểm tra cấu trúc", badge)
 
-        with st.expander("🧱 Chi tiết Structure", expanded=not is_valid_structure):
+        with st.expander("🧱 Chi tiết vấn đề về cấu trúc", expanded=not is_valid_structure):
             if is_valid_structure and not issues:
-                st.success("Cấu trúc AIDA hợp lệ. Không có issues.")
+                st.success("Cấu trúc AIDA hợp lệ. Không có vấn đề.")
             else:
-                st.warning("Phát hiện vấn đề về structure:")
-                st.write(issues if issues else "Không có mô tả issues.")
+                st.warning("Phát hiện vấn đề về cấu trúc:")
+                st.write(issues if issues else "Không có mô tả vấn đề.")
