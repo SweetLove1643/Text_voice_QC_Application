@@ -408,11 +408,11 @@ with right:
     with st.expander("⚙️ Cài đặt các điểm trừ cho từng mục QC"):
         score_missing_required = st.number_input(
             "Điểm trừ khi thiếu Required Keywords", 
-            value=-12, step=1
+            value=-7, step=1
         )
         score_forbidden_found = st.number_input(
             "Điểm trừ khi có Forbidden Keywords", 
-            value=-7, step=1
+            value=-5, step=1
         )
         
         if active == "AIDA":
@@ -539,8 +539,9 @@ with right:
                             {payload}
                             2. CÁCH THỨC KIỂM TRA
                             2.1 Chính sách 
-                            - required_keywords: kiểm tra xem các keywords có tồn tài trong script hay không và trả về những từ bị thiếu.
-                            - forbidden_keywords: Trả về các keywords bị cấm xuất hiện trong script.
+                            - required_keywords: kiểm tra xem các từ/cụm từ (ngăn cách bởi dấu , ) có tồn tài trong script hay không và trả về những từ bị thiếu.
+                            - forbidden_keywords: Trả về các từ/cụm từ (ngăn cách bởi dấu , ) bị cấm xuất hiện trong script.
+                            Hãy dựa vào danh sách từ/cụm từ được cung cấp để kiểm tra chính xác sự tồn tại của các từ/cụm từ trong script.
                             2.2 Content Criteria
                             Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn lại các văn đoạn (nếu có)) 
                             Nếu excerpt có nhiều hơn một thì hãy liên kết bằng cách kí tự liên kết(ví dụ như ||) để làm sao nhận ra đó là nhiều câu nhưng TUYỆT ĐỐI trường "excerpt" không được chứa nhiều chuỗi và chỉ chứa một chuỗi duy nhất
@@ -686,8 +687,9 @@ with right:
                             {payload}
                             2. CÁCH THỨC KIỂM TRA
                             2.1 Chính sách 
-                            - required_keywords: kiểm tra xem các keywords có tồn tài trong script hay không và trả về những từ bị thiếu.
-                            - forbidden_keywords: Trả về các keywords bị cấm xuất hiện trong script.
+                            - required_keywords: kiểm tra xem các từ/cụm từ (ngăn cách bởi dấu , ) có tồn tài trong script hay không và trả về những từ bị thiếu.
+                            - forbidden_keywords: Trả về các từ/cụm từ (ngăn cách bởi dấu , ) bị cấm xuất hiện trong script.
+                            Hãy dựa vào danh sách từ/cụm từ được cung cấp để kiểm tra chính xác sự tồn tại của các từ/cụm từ trong script.
                             2.2 Content Criteria
                             Ở mỗi phần hãy trả về exists: true/false và excerpt (xác định CHÍNH XÁC và trích dẫn lại các văn đoạn (nếu có))
                             Nếu excerpt có nhiều hơn một thì hãy liên kết bằng cách kí tự liên kết(ví dụ như ||) để làm sao nhận ra đó là nhiều câu nhưng TUYỆT ĐỐI trường "excerpt" không được chứa nhiều chuỗi và chỉ chứa một chuỗi duy nhất
@@ -834,7 +836,8 @@ with right:
             with c1:
                 st.metric("Số lượng các từ bắt buộc bị thiếu", len(missing[0]) if missing else 0)
             with c2:
-                st.metric("Số lượng các từ cấm được tìm thấy", len(forbidden[0]) if forbidden else 0)
+                lst = [x.strip() for x in forbidden.replace("\n", ",").split(",") if x.strip()]
+                st.metric("Số lượng các từ cấm được tìm thấy", len(lst) if lst else 0)
 
             with st.expander("❗ Danh sách các từ bắt buộc bị thiếu"):
                 if missing and missing[0]:
