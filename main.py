@@ -22,8 +22,11 @@ def init_state():
 
 init_state()
 
-def reload_tags():
+def reload_forbidden():
+    st.session_state.forbidden_keywords = []
     st.session_state.reload_keyword_forbidden += 1
+def reload_required():
+    st.session_state.required_keywords = []
     st.session_state.reload_keyword_required += 1
 
 def merge_keywords(old_list, new_list):
@@ -115,21 +118,61 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.subheader("📝 Nhập Script cần QC")
+if "show_help" not in st.session_state:
+    st.session_state.show_help = False
+@st.dialog("📘 Hướng dẫn sử dụng")
+def help_dialog():
+    st.markdown("""
+## 📌 Mô tả ứng dụng
+Ứng dụng này dùng để **kiểm duyệt (QC) nội dung kịch bản (voice video)** trước khi tạo **Video AI**, theo các chuẩn nội dung **AIDA** hoặc **PAS**.
+
+## 🧩 Ứng dụng kiểm tra được gì?
+- **Từ cấm**: phát hiện các từ/ cụm từ không được xuất hiện trong kịch bản
+- **Từ bắt buộc**: kiểm tra kịch bản có chứa các từ/ cụm từ cần phải có hay không
+- **Chuẩn nội dung AIDA / PAS**: đánh giá nội dung dựa trên các thành phần đã tách (ví dụ: *Hook, Problem/Solution, Time, ...*)
+  - Hỗ trợ cơ chế **Optional**: một số thành phần có thể “không bắt buộc” phải kiểm tra
+- **Chấm điểm kịch bản**: cho điểm tổng quan và **chỉ ra phần còn thiếu / chưa đạt**
+- **Kiểm tra cấu trúc**: kiểm tra bố cục kịch bản có đúng cấu trúc chuẩn hay không
+
+---
+
+## ✅ Cách sử dụng (Quickstart)
+> Lưu ý: Ứng dụng có **mục bắt buộc** và **mục không bắt buộc** (nếu chưa cần, bạn có thể bỏ qua).
+
+1. **Nhập kịch bản**  
+   Dán toàn bộ nội dung *voice script* vào ô **“Kịch bản”** để chuẩn bị kiểm tra.
+
+2. **(Tuỳ chọn) Nhập từ cấm / từ bắt buộc**  
+   Thêm danh sách **từ cấm** hoặc **từ bắt buộc** nếu bạn muốn kiểm tra theo rule riêng.
+
+3. **Chọn chuẩn nội dung**  
+   Chọn **AIDA** hoặc **PAS** (mặc định là **AIDA**) trong phần **Tùy chọn QC nâng cao**.
+
+4. **Chạy QC và xem kết quả**  
+   Bấm **QC** để nhận báo cáo: lỗi từ cấm, thiếu từ bắt buộc, thiếu thành phần, điểm số và gợi ý cải thiện.
+
+---
+
+## ⚙️ Tuỳ chỉnh nâng cao (tuỳ chọn)
+Bạn có thể điều chỉnh cơ chế kiểm tra để phù hợp từng chiến dịch, ví dụ:
+- **Nhập thông tin sản phẩm** để hệ thống kiểm tra bám sát sản phẩm hơn
+- **Định nghĩa lại tiêu chí định tính** cho từng thành phần trong mẫu nội dung (Hook, Solution, ...)
+- **Điều chỉnh cơ chế trừ điểm** để thay đổi mức độ “gắt” khi chấm điểm
+""")
+    if st.button("Đóng"):
+        st.session_state.show_help = False
+        st.rerun()
+if st.button("📘 Hướng dẫn"):
+    st.session_state.show_help = True
+if st.session_state.show_help == True:
+    help_dialog()
+
+st.subheader("📝 Nhập Kịch bản cần kiểm tra")
 
 script = st.text_area(
-    "Nhập nội dung cần QC",
+    "Nhập nội dung cần kiểm tra",
     height=250,
-    placeholder="Nhập nội dung vào đây...",
-    value="""Anh em sẹo rỗ đừng vội đi spa, da liễu chi cho tốn kém mà không thử con serum mờ sẹo Shark Scar này trước đi.
-Sẹo rỗ lâu năm, sẹo rỗ sau mụn của nhiều anh em sau khi dùng đã được làm mờ đi trông thấy, da dẻ căng lên bằng phẳng
-Giúp nhiều anh em lấy lại diện mạo sáng sủa, tự tin thăng tiến trong sự nghiệp chỉ sau hơn 1 tháng sử dụng.
-Đây là tinh chất mờ sẹo rỗ dành cho nam giới với thành phần chính từ tế bào gốc nên phục hồi và tái tạo collagen mạnh mẽ, nâng đẩy tăng sinh đáy sẹo nhanh chóng.
-Được chuyên gia da liễu Hoa Kỳ nghiên cứu, cùng các dược sĩ và các beauty blogger khuyên dùng thì anh chần chừ gì mà không thử ngay
-Vừa tiết kiệm chi phí thời gian, vừa làm mờ sẹo tại nhà dễ dàng hơn bao giờ hết vì chỉ cần kiên trì bôi thoa đều đặn 2 lần một tuần
-Chưa đến nửa chai da dẻ sẹo rỗ mờ đi thu nhỏ, đến lúc đó anh em ra đường tha hồ phát triển sự nghiệp, đường công danh rộng mở
-Hiện đang có ưu đãi tặng kem chống nắng và mặt nạ nè! Còn 50 suất thôi! Inbox mua ngay kẻ hết quà anh em ơi!
-"""
+    placeholder="Nhập nội dung vào đây..."
 )
 
 left, right = st.columns([1, 1])
@@ -142,26 +185,26 @@ with left:
         if file_up and st.button("Import & Merge JSON", on_click=reload_tags):
             import_json_rulebase(file_up)
 
-    with st.expander("📄 Hiện tại Rule Base"):
+    with st.expander("📄 Hiện tại Rule Base", expanded = True):
         st.markdown("### 🚫 Danh sách từ cấm")
-        if st.button("Xóa danh sách từ cấm", on_click=reload_tags):
-            st.session_state["forbidden_keywords"] = []
+        st.button("Xóa danh sách từ cấm", on_click=reload_forbidden)
         forbidden_ui = st_tags(
             label="Thêm từ cấm",
             text="Thêm từ mới...",
             value=st.session_state["forbidden_keywords"],
             key=f"forbidden_tags_{st.session_state.reload_keyword_forbidden}"
         )
-        st.markdown("### ✅ Danh sách từ bắt buộc")
-        if st.button("Xóa danh sách từ bắt buốc", on_click=reload_tags):
-            st.session_state["required_keywords"] = []
+        st.session_state.forbidden_keywords = forbidden_ui
 
+        st.markdown("### ✅ Danh sách từ bắt buộc")
+        st.button("Xóa danh sách từ bắt buộc", on_click=reload_required)
         required_ui = st_tags(
             label="Thêm từ bắt buộc",
             text="Thêm từ mới...",
             value=st.session_state["required_keywords"],
             key=f"required_tags_{st.session_state.reload_keyword_required}"
         )
+        st.session_state.required_keywords = required_ui 
 
     with st.expander("👀 JSON danh sách từ cấm hiện tại"):
         current_json = {
