@@ -1,3 +1,4 @@
+from matplotlib.pylab import sample
 import streamlit as st
 from streamlit_tags import st_tags
 import json
@@ -423,7 +424,7 @@ with right:
             st.stop()
 
         if info:
-            prompt_info = f"""4. Đây là thông tin chính xác về sản phẩm mà người dùng cung cấp, có thể dựa vào đây để tiến hành kiểm định:{info}"""
+            prompt_info = f"""5. Đây là thông tin chính xác về sản phẩm mà người dùng cung cấp, có thể dựa vào đây để tiến hành kiểm định:{info}"""
         else:
             prompt_info = "" 
 
@@ -477,6 +478,9 @@ with right:
                                 "structure": {
                                     "is_valid_structure": False,
                                     "issues": ""
+                                },
+                                "recommendations":{
+                                    "recommendation_script": ""
                                 }
                             }
                 
@@ -514,7 +518,9 @@ with right:
                             *Ví dụ: Nhắn ‘TƯ VẤN’ để nhận hướng dẫn phù hợp, đang có ưu đãi [X%/quà] đến hết [ngày/khung giờ].
                             2.3 Cấu trúc
                             Bạn sẽ kiểm tra cấu trúc tổng thể của script có đúng theo mấu AIDA hay không(lần lượt trong script là Attention, Interest, Desire, Action) và trả kết quả is_valid_structure và nêu vấn đề của script bằng tiếng Việt ở issues.
-                            3. Định dạng phải trả về (BẮT BUỘC)
+                            3. Đề xuất cải thiện
+                            Dựa vào những điểm khiếm khuyết còn tồn tại trong script, hãy gửi ý một script hoàn chỉnh hơn, đầy đủ tiêu chí ở phần recommendations -> recommendation_script (không được chứa kí tự '\n' trong đoạn này).
+                            4. Định dạng phải trả về (BẮT BUỘC)
                             Luôn trả về JSON hợp lệ theo đúng mẫu sau:
                             {output_format}                           
                             Trả về excerpt = "" thay vì excerpt = null hoặc N/A.
@@ -625,6 +631,9 @@ with right:
                                 "structure": {
                                     "is_valid_structure": False,
                                     "issues": ""
+                                },
+                                "recommendations":{
+                                    "recommendation_script": ""
                                 }
                             }
                 
@@ -667,13 +676,16 @@ with right:
                             *Ví dụ: Nhắn ‘NHẬN TƯ VẤN’ để mình hướng dẫn đúng trường hợp của bạn—ưu đãi [X%/quà] đến hết [mốc thời gian].
                             2.3 Cấu trúc
                             Bạn sẽ kiểm tra cấu trúc tổng thể của script có đúng theo mấu PAS hay không(lần lượt trong script là Problem, Agitate, Solution) và trả kết quả is_valid_structure và nêu vấn đề của script bằng tiếng Việt ở issues.
-                            3. Định dạng phải trả về (BẮT BUỘC)
+                            3. Đề xuất cải thiện
+                            Dựa vào những điểm khiếm khuyết còn tồn tại trong script, hãy gửi ý một script hoàn chỉnh hơn, đầy đủ tiêu chí ở phần recommendations -> recommendation_script (không được chứa kí tự '\n' trong đoạn này).
+                            4. Định dạng phải trả về (BẮT BUỘC)
                             Luôn trả về JSON hợp lệ theo đúng mẫu sau:
                             {output_format}                           
                             Trả về excerpt = "" thay vì excerpt = null hoặc N/A.
                             Không được trả về thêm bất kỳ nội dung nào ngoài JSON.
                             {prompt_info}
                             YÊU CẦU KIỂM TRA KHẮT KHE, CHÍNH XÁC VỀ SỰ TỒN TẠI CỦA CÁC THUỘC TÍNH TRONG CONTENT CRITERIA DỰA VÀO CÁC ĐỊNH NGHĨA Ở TRÊN.
+                            Lưu ý: Nếu kết quả trả về phải đảm bảo là JSON hợp lệ 100% (không chứ kí tự \n,...)
                         """
 
                 data_requests = {
@@ -865,6 +877,12 @@ with right:
             else:
                 st.warning("Phát hiện vấn đề về cấu trúc:")
                 st.write(issues if issues else "Không có mô tả vấn đề.")
+        
+        st.markdown(" --- ")
+        st.markdown("### 💡 Đoạn mẫu gợi ý cải thiện")
+        recommendation = result.get("recommendations", {})
+        st.info(recommendation.get("recommendation_script", "Không có gợi ý cải thiện.")) 
+        
     elif result.get("starndard") == "PAS":
         is_passed = result.get("is_passed", False)
         score = result.get("score", 0)
@@ -980,3 +998,8 @@ with right:
             else:
                 st.warning("Phát hiện vấn đề về cấu trúc:")
                 st.write(issues if issues else "Không có mô tả vấn đề.")
+
+        st.markdown(" --- ")
+        st.markdown("### 💡 Đoạn mẫu gợi ý cải thiện")
+        recommendation = result.get("recommendations", {})
+        st.info(recommendation.get("recommendation_script", "Không có gợi ý cải thiện.")) 
